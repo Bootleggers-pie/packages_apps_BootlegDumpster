@@ -105,6 +105,12 @@
         android:summary="@string/fprint_sucess_vib_summary"
         android:defaultValue="true" />
 
+        <com.bootleggers.dumpster.preferences.SystemSettingSwitchPreference
+        android:key="hide_lockscreen_status_bar"
+        android:title="@string/hide_lockscreen_status_bar_title"
+        android:summary="@string/hide_lockscreen_status_bar_summary"
+        android:defaultValue="false" />
+
     </PreferenceCategory>
 
 </PreferenceScreen>
