@@ -22,20 +22,48 @@
         android:key="quickset_uiandstuff"
         android:title="@string/cat_general_ui">
 
-    <com.bootleggers.dumpster.preferences.SystemSettingSeekBarPreference
-        android:key="qs_panel_alpha"
-        android:title="@string/qs_panel_alpha_title"
-        android:max="255"
-        android:min="100"
-        android:defaultValue="255"
-        settings:units=""
-        android:persistent="false" />
-
     <com.bootleggers.dumpster.preferences.SystemSettingSwitchPreference
         android:key="qs_running_services_toggle"
         android:title="@string/qs_running_services_title"
         android:summary="@string/qs_running_services_summary"
         android:defaultValue="true" />
+
+    <PreferenceCategory
+        android:key="qs_category"
+        android:title="@string/qs_themes_category_title" >
+
+        <com.bootleggers.dumpster.preferences.SystemSettingSwitchPreference
+            android:key="qs_panel_bg_use_fw"
+            android:title="@string/qs_bg_use_fw"
+            android:summary="@string/qs_bg_use_fw_summary"
+            android:defaultValue="true"
+            android:disableDependentsState="true" />
+
+        <com.bootleggers.dumpster.preferences.SystemSettingSwitchPreference
+            android:key="qs_panel_bg_use_wall"
+            android:title="@string/qs_bg_wall_title"
+            android:summary="@string/qs_bg_wall_summary"
+            android:defaultValue="false"
+            android:dependency="qs_panel_bg_use_fw" />
+
+        <net.margaritov.preference.colorpicker.ColorPickerPreference
+            android:key="qs_panel_color"
+            android:title="@string/qs_panel_color_title"
+            android:defaultValue="0xffffff"
+            android:persistent="false"
+            android:dependency="qs_panel_bg_use_fw" />
+
+        <com.bootleggers.dumpster.preferences.SystemSettingSeekBarPreference
+            android:key="qs_panel_alpha"
+            android:title="@string/qs_panel_alpha_title"
+            android:max="255"
+            android:min="100"
+            android:defaultValue="255"
+            settings:units=""
+            android:persistent="false"			
+            android:dependency="qs_panel_bg_use_fw" />
+
+    </PreferenceCategory>
 
     <Preference
         android:key="qs_tile_style"

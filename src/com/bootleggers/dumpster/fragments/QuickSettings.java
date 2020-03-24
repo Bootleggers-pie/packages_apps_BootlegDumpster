@@ -28,6 +28,7 @@ import com.bootleggers.dumpster.external.QsTileStyles;
 import com.bootleggers.dumpster.extra.Utils;
 import com.bootleggers.dumpster.preferences.CustomSeekBarPreference;
 import com.bootleggers.dumpster.preferences.SystemSettingSwitchPreference;
+import net.margaritov.preference.colorpicker.ColorPickerPreference;
 
 import java.util.List;
 import java.util.ArrayList;
@@ -51,6 +52,8 @@ public class QuickSettings extends SettingsPreferenceFragment implements
     private static final String QUICK_PULLDOWN = "quick_pulldown";
     private static final String PREF_SMART_PULLDOWN = "smart_pulldown";
     private static final String QS_PANEL_ALPHA = "qs_panel_alpha";
+    private static final String QS_PANEL_COLOR = "qs_panel_color";
+    static final int DEFAULT_QS_PANEL_COLOR = 0xffffffff;
 
     private static final int REQUEST_PICK_IMAGE = 0;
 
@@ -66,6 +69,7 @@ public class QuickSettings extends SettingsPreferenceFragment implements
     ListPreference mSmartPulldown;
     private SystemSettingSwitchPreference mDisableQS;
     private SystemSettingSeekBarPreference mQsPanelAlpha;
+    private ColorPickerPreference mQsPanelColor;
 
     @Override
     public void onCreate(Bundle icicle) {
@@ -133,6 +137,14 @@ public class QuickSettings extends SettingsPreferenceFragment implements
                 Settings.System.QS_PANEL_BG_ALPHA, 255, UserHandle.USER_CURRENT);
         mQsPanelAlpha.setValue(qsPanelAlpha);
         mQsPanelAlpha.setOnPreferenceChangeListener(this);
+
+        mQsPanelColor = (ColorPickerPreference) findPreference(QS_PANEL_COLOR);
+        mQsPanelColor.setOnPreferenceChangeListener(this);
+        int intColor = Settings.System.getIntForUser(getContentResolver(),
+                Settings.System.QS_PANEL_BG_COLOR, DEFAULT_QS_PANEL_COLOR, UserHandle.USER_CURRENT);
+        String hexColor = String.format("#%08x", (0xffffffff & intColor));
+        mQsPanelColor.setSummary(hexColor);
+        mQsPanelColor.setNewPreviewColor(intColor);
 
         mSmartPulldown = (ListPreference) findPreference(PREF_SMART_PULLDOWN);
         mSmartPulldown.setOnPreferenceChangeListener(this);
@@ -230,16 +242,24 @@ public class QuickSettings extends SettingsPreferenceFragment implements
             Boolean headerEnabled = (Boolean) newValue;
             updateHeaderProviderSummary(headerEnabled);
             return true;
-        } else if (preference == mQsPanelAlpha) {
-            int bgAlpha = (Integer) newValue;
-            Settings.System.putIntForUser(getContentResolver(),
-                    Settings.System.QS_PANEL_BG_ALPHA, bgAlpha, UserHandle.USER_CURRENT);
-            return true;
         } else if (preference == mQuickPulldown) {
             int quickPulldownValue = Integer.valueOf((String) newValue);
             Settings.System.putIntForUser(resolver, Settings.System.STATUS_BAR_QUICK_QS_PULLDOWN,
                     quickPulldownValue, UserHandle.USER_CURRENT);
             updatePulldownSummary(quickPulldownValue);
+            return true;
+        } else if (preference == mQsPanelAlpha) {
+            int bgAlpha = (Integer) newValue;
+            Settings.System.putIntForUser(getContentResolver(),
+                    Settings.System.QS_PANEL_BG_ALPHA, bgAlpha, UserHandle.USER_CURRENT);
+            return true;
+        } else if (preference == mQsPanelColor) {
+            String hex = ColorPickerPreference.convertToARGB(
+                    Integer.valueOf(String.valueOf(newValue)));
+            preference.setSummary(hex);
+            int intHex = ColorPickerPreference.convertToColorInt(hex);
+            Settings.System.putIntForUser(getContentResolver(),
+                    Settings.System.QS_PANEL_BG_COLOR, intHex, UserHandle.USER_CURRENT);
             return true;
         } else if (preference == mSmartPulldown) {
             int smartPulldown = Integer.valueOf((String) newValue);
