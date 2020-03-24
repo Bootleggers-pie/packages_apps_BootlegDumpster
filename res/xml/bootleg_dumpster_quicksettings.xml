@@ -32,6 +32,15 @@
         android:key="qs_category"
         android:title="@string/qs_themes_category_title" >
 
+        <com.bootleggers.dumpster.preferences.SystemSettingSeekBarPreference
+            android:key="qs_panel_alpha"
+            android:title="@string/qs_panel_alpha_title"
+            android:max="255"
+            android:min="100"
+            android:defaultValue="255"
+            settings:units=""
+            android:persistent="false" />
+
         <com.bootleggers.dumpster.preferences.SystemSettingSwitchPreference
             android:key="qs_panel_bg_use_fw"
             android:title="@string/qs_bg_use_fw"
@@ -58,16 +67,6 @@
             android:title="@string/qs_bg_accent_title"
             android:summary="@string/qs_bg_accent_summary"
             android:defaultValue="false"
-            android:dependency="qs_panel_bg_use_fw" />
-
-        <com.bootleggers.dumpster.preferences.SystemSettingSeekBarPreference
-            android:key="qs_panel_alpha"
-            android:title="@string/qs_panel_alpha_title"
-            android:max="255"
-            android:min="100"
-            android:defaultValue="255"
-            settings:units=""
-            android:persistent="false"			
             android:dependency="qs_panel_bg_use_fw" />
 
     </PreferenceCategory>
