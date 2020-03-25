@@ -28,6 +28,7 @@ import com.bootleggers.dumpster.external.QsTileStyles;
 import com.bootleggers.dumpster.extra.Utils;
 import com.bootleggers.dumpster.preferences.CustomSeekBarPreference;
 import com.bootleggers.dumpster.preferences.SystemSettingSwitchPreference;
+import com.bootleggers.dumpster.preferences.SystemSettingSeekBarPreference;
 import net.margaritov.preference.colorpicker.ColorPickerPreference;
 
 import java.util.List;
